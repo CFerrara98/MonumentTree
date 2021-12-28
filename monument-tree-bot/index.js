@@ -34,6 +34,17 @@ const { MainDialog } = require('./dialogs/mainDialog');
 const { OptionDialog } = require('./dialogs/optionsDialog');
 const OPTIONDIALOG = 'optionsDialog';
 
+//cosmosDB
+const { CosmosDbPartitionedStorage } = require('botbuilder-azure');
+
+const myStorage = new CosmosDbPartitionedStorage({
+    cosmosDbEndpoint: process.env.CosmosDbEndpoint,
+    authKey: process.env.CosmosDbAuthKey,
+    databaseId: process.env.CosmosDbDatabaseId,
+    containerId: process.env.CosmosDbContainerId,
+    compatibilityMode: false
+});
+
 //the bot's secondary dialog
 const { TreeByCityDialog } = require('./dialogs/treeByCityDialog');
 const TREEBYCITY_DIALOG = 'treeByCityDialog';
@@ -107,6 +118,7 @@ server.listen(process.env.port || process.env.PORT || 3978, function() {
     console.log(`\n${ server.name } listening to ${ server.url }`);
     console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
     console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
+    
 });
 
 // Listen for incoming activities and route them to your bot main dialog.
@@ -125,3 +137,5 @@ server.on('upgrade', async (req, socket, head) => {
 
     await streamingAdapter.process(req, socket, head, (context) => bot.run(context));
 });
+
+module.exports.myStorage = myStorage;

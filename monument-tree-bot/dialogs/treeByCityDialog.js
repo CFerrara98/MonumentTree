@@ -3,6 +3,10 @@ const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-
 const { InputHints, MessageFactory, ActivityTypes, CardFactory } = require('botbuilder');
 const { ConfirmPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { CancelAndHelpDialog } = require('./cancelAndHelpDialog');
+const { CosmosClient } = require("@azure/cosmos");
+const endpoint = process.env["CosmosDbEndpoint"];
+const key = process.env["CosmosDbAuthKey"];
+const clientDB = new CosmosClient({ endpoint, key });
 
 const TEXT_PROMPT = 'TextPrompt';
 const WATERFALL_DIALOG = 'waterfallDialog';
@@ -33,19 +37,19 @@ class TreeByCityDialog extends CancelAndHelpDialog {
             ]));
 
         this.initialDialogId = WATERFALL_DIALOG;
-    }    
-    
+    }
+
     async askCity(stepContext) {
-        const msg = MessageFactory.text("Inserisci la città di interesse", "Inserisci la città di interesse", InputHints.ExpectingInput);
+        const msg = MessageFactory.text("Inserisci il comune di interesse", "Inserisci la città di interesse", InputHints.ExpectingInput);
         return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
     }
 
     async getTreeCity(stepContext) {
 
-        
+
         //CosmosDB
         const { database } = await clientDB.databases.createIfNotExists({ id: "Alberi" });
-   
+
         const { container } = await database.containers.createIfNotExists({ id: "Alberi" });
 
         var query = "SELECT * FROM c WHERE LOWER(c.COMUNE) LIKE LOWER('%"+stepContext.result+"%')";
@@ -64,7 +68,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
             return await stepContext.endDialog();
         }else{
             for (const o of resources) {
-                listanomi.push(o.NOME_VOLGA);    
+                listanomi.push(o.NOME_VOLGA);
                 console.log("Alberi trovati:" + o.NOME_VOLGA);
                 var alberoCard = CardFactory.thumbnailCard(
                     o.NOME_VOLGA,
@@ -87,15 +91,15 @@ class TreeByCityDialog extends CancelAndHelpDialog {
                             text: o.DESCRIZIONE
                         }
                 );
-        
+
                 reply.attachments = [alberoCard];
-                await stepContext.context.sendActivity(reply);            
-                
+                await stepContext.context.sendActivity(reply);
+
             }
-            
+
         }
 
-        
+
 
         const msg = MessageFactory.text("Clicca Raggiungi un'albero in una delle card oppure scrivi qualcos'altro per andare indietro!" , "", InputHints.ExpectingInput);
         return  await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
@@ -111,7 +115,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
         else{
             console.log("Pluto");
             return await stepContext.endDialog();
-        } 
+        }
     }
 
     isAmbiguous(timex) {
