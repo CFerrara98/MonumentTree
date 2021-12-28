@@ -3,6 +3,8 @@ const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-
 const { InputHints, MessageFactory } = require('botbuilder');
 const { ConfirmPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { CancelAndHelpDialog } = require('./cancelAndHelpDialog');
+//const { myStorage } = require('../index');
+
 
 const CONFIRM_PROMPT = 'confirmPrompt';
 const DATE_RESOLVER_DIALOG = 'dateResolverDialog';
@@ -53,9 +55,10 @@ class OptionDialog extends CancelAndHelpDialog {
 
 
     async luisStep(stepContext){
-
+        
         const luisResult = await this.luisRecognizer.executeLuisQuery(stepContext.context);
         switch (LuisRecognizer.topIntent(luisResult)) {
+            
                         case 'InformazioniByZona': {
                             return await stepContext.beginDialog(TREEBYCITY_DIALOG);              
                         }
