@@ -10,19 +10,21 @@ const TEXT_PROMPT = 'TextPrompt';
 const WATERFALL_DIALOG = 'waterfallDialog';
 
 const { LuisRecognizer } = require('botbuilder-ai');
+const { 
+    TREEBYCITY_DIALOG,
+    TreeByCityDialog
+} = require("./treeByCityDialog");
 
 class OptionDialog extends CancelAndHelpDialog {
     constructor(id, luisRecognizer) {
         super(id || 'optionsDialog');
 
-
+        
         if (!luisRecognizer) throw new Error('[MainDialog]: Missing parameter \'luisRecognizer\' is required');
         this.luisRecognizer = luisRecognizer;
 
-        this/*addDialog(new TextPrompt(TEXT_PROMPT))
-            .addDialog(new ConfirmPrompt(CONFIRM_PROMPT))
-            .addDialog(new DateResolverDialog(DATE_RESOLVER_DIALOG))*/
-            .addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
+        this.addDialog(new TreeByCityDialog());
+        this.addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
                 this.optionsStep.bind(this),
                 this.luisStep.bind(this),
                 this.loopStep.bind(this)
@@ -55,15 +57,14 @@ class OptionDialog extends CancelAndHelpDialog {
         const luisResult = await this.luisRecognizer.executeLuisQuery(stepContext.context);
         switch (LuisRecognizer.topIntent(luisResult)) {
                         case 'InformazioniByZona': {
-
-                            const msg = MessageFactory.text("Mi hai chiesto gli alberi di una zona!", "Mi hai chiesto gli alberi di una zona!", InputHints.ExpectingInput);
-                            return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
+                            return await stepContext.beginDialog(TREEBYCITY_DIALOG);              
                         }
                 
                         case 'AlberiByPhoto': {
                             // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                             const msg = MessageFactory.text("Mi hai chiesto gli alberi data una foto!", "Mi hai chiesto gli alberi data una foto!", InputHints.ExpectingInput);
                             return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
+
                         }
 
                         case 'PosizioneByAlbero': {

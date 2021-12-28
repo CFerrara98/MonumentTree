@@ -34,6 +34,10 @@ const { MainDialog } = require('./dialogs/mainDialog');
 const { OptionDialog } = require('./dialogs/optionsDialog');
 const OPTIONDIALOG = 'optionsDialog';
 
+//the bot's secondary dialog
+const { TreeByCityDialog } = require('./dialogs/treeByCityDialog');
+const TREEBYCITY_DIALOG = 'treeByCityDialog';
+
 const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
     MicrosoftAppId: process.env.MicrosoftAppId,
     MicrosoftAppPassword: process.env.MicrosoftAppPassword,
@@ -93,6 +97,7 @@ const luisRecognizer = new MonumentTreeRecognizer(luisConfig);
 const optionDialog = new OptionDialog(OPTIONDIALOG, luisRecognizer);
 const dialog = new MainDialog(luisRecognizer, optionDialog);
 const bot = new DialogAndWelcomeBot(conversationState, userState, dialog);
+const treebycitydialog = new TreeByCityDialog(TREEBYCITY_DIALOG);
 
 // Create HTTP server
 const server = restify.createServer();

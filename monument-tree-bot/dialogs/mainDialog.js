@@ -5,6 +5,9 @@ const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-
 const { MessageFactory, InputHints } = require('botbuilder');
 
 const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
+const { TREEBYCITY_DIALOG,
+    TreeByCityDialog
+} = require('./treeByCityDialog');
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 
@@ -24,9 +27,10 @@ class MainDialog extends ComponentDialog {
         this.optionDialog = optionDialog;
         // Define the main dialog and its related components.
         // This is a sample "book a flight" dialog.
-        this.addDialog(new TextPrompt('TextPrompt'))
-            .addDialog(optionDialog)
-            .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
+        this.addDialog(new TextPrompt('TextPrompt'));
+        this.addDialog(optionDialog);
+        this.addDialog(new TreeByCityDialog());
+        this.addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
                 this.introStep.bind(this),
                 this.actStep.bind(this),
                 this.finalStep.bind(this)
