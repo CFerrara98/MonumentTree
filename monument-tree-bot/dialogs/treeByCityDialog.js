@@ -3,10 +3,8 @@ const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-
 const { InputHints, MessageFactory, ActivityTypes, CardFactory } = require('botbuilder');
 const { ConfirmPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { CancelAndHelpDialog } = require('./cancelAndHelpDialog');
-const { CosmosClient } = require("@azure/cosmos");
-const endpoint = process.env["CosmosDbEndpoint"];
-const key = process.env["CosmosDbAuthKey"];
-const clientDB = new CosmosClient({ endpoint, key });
+
+
 
 const TEXT_PROMPT = 'TextPrompt';
 const WATERFALL_DIALOG = 'waterfallDialog';
