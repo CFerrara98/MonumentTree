@@ -12,8 +12,6 @@ const endpoint = process.env["CosmosDbEndpoint"];
 const key = process.env["CosmosDbAuthKey"];
 const clientDB = new CosmosClient({ endpoint, key });
 
-//const MapHelper = require("../utils/MapHelper");
-
 const fetch = require('node-fetch');
 
 
@@ -31,11 +29,13 @@ class MapsDialog extends CancelAndHelpDialog {
     }    
     
     async searchPath(stepContext) {
-        const msg = MessageFactory.text("Vuoi Raggiungere l'albero: " + stepContext.result, "", InputHints.ExpectingInput);
+        const msg = MessageFactory.text("Vuoi Raggiungere l'albero: " + stepContext._info.options.TreeName, "", InputHints.ExpectingInput);
         await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
         
-        //const mapHelper = new MapHelper.default();
-        await this.getMap(stepContext,  "40.748760", "14.771720");
+        var Latitude = stepContext._info.options.Latitude;
+        var Longitude = stepContext._info.options.Longitude;
+
+        await this.getMap(stepContext,  Latitude, Longitude);
 
         const reply = {
             type: ActivityTypes.Message
@@ -67,6 +67,14 @@ class MapsDialog extends CancelAndHelpDialog {
           redirect: 'follow'
         };
     
+        
+
+        navigator.geolocation.getCurrentPosition( async (position) => {
+          const { latitude, longitude } = position.coords;
+          // Do something with the data;
+          console.log(latitude, longitude)
+        })
+        
         const result = await fetch(`https://atlas.microsoft.com/map/static/png?subscription-key=${ process.env.AZURE_MAPS_KEY }&api-version=1.0&layer=basic&zoom=13&center=${ longitude },${ latitude }&language=en-US&pins=default|al.67|la12 3|lc000000||'You!'${ longitude } ${ latitude }&format=png`, requestOptions)
           .then(response => response.arrayBuffer())
           .then(async result => {
@@ -87,6 +95,8 @@ class MapsDialog extends CancelAndHelpDialog {
     
         return result;
       };
+
+
 
     isAmbiguous(timex) {
         const timexPropery = new TimexProperty(timex);

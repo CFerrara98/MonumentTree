@@ -82,8 +82,8 @@ class TreeByCityDialog extends CancelAndHelpDialog {
                             type: 'messageBack',
                             title: "Raggiungi l\'albero",
                             displayText: o.NOME_VOLGA,
-                            text: o.NOME_VOLGA,
-                            value: {dalbero: o._id}
+                            text: '{"NomeAlbero": "'+ o.NOME_VOLGA +  '", "Latitudine": "'+  o.Latitudine + '", "Longitudine": "'+  o.Longitudine +'"}',
+                            value: {albero: o._id}
                         }], {
                             subtitle: o.LOCALITA + ', ' + o.COMUNE,
                             text: o.DESCRIZIONE
@@ -105,10 +105,15 @@ class TreeByCityDialog extends CancelAndHelpDialog {
     }
 
 
-    async selectTreeOrNot(stepContext){;
-        if(listanomi.includes(stepContext.result)) {
+    async selectTreeOrNot(stepContext){
+
+        var string = stepContext.result;
+        let parsed = JSON.parse(string);
+
+        if(listanomi.includes(parsed.NomeAlbero)) {
             console.log("pippo");
-            return await stepContext.beginDialog(MAPS_DIALOG);
+
+            return await stepContext.beginDialog(MAPS_DIALOG, {"TreeName": parsed.NomeAlbero, "Latitude" : parsed.Latitudine, "Longitude" : parsed.Longitudine});
         }
         else{
             console.log("Pluto");
