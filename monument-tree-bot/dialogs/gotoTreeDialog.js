@@ -8,7 +8,7 @@ const { CancelAndHelpDialog } = require('./cancelAndHelpDialog');
 
 const TEXT_PROMPT = 'TextPrompt';
 const WATERFALL_DIALOG = 'waterfallDialog';
-const TREEBYCITY_DIALOG = 'TREEBYCITY_DIALOG';
+const GOTOTREE_DIALOG = 'GOTOTREE_DIALOG';
 
 const MAPS_DIALOG = 'MAPS_DIALOG';
 
@@ -22,27 +22,27 @@ const clientDB = new CosmosClient({ endpoint, key });
 
 const listanomi = [];
 
-class TreeByCityDialog extends CancelAndHelpDialog {
+class GoToTreeDialog extends CancelAndHelpDialog {
     constructor(userState) {
-        super(TREEBYCITY_DIALOG);
+        super(GOTOTREE_DIALOG);
 
 
         this.addDialog(new MapsDialog(MAPS_DIALOG))
             .addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
-                this.askCity.bind(this),
-                this.getTreeCity.bind(this),
+                this.askName.bind(this),
+                this.getTreeByName.bind(this),
                 this.selectTreeOrNot.bind(this)
             ]));
 
         this.initialDialogId = WATERFALL_DIALOG;
     }
 
-    async askCity(stepContext) {
-        const msg = MessageFactory.text("Inserisci il comune di interesse", "Inserisci la città di interesse", InputHints.ExpectingInput);
+    async askName(stepContext) {
+        const msg = MessageFactory.text("Inserisci il nome dell'albero che vorresti visitare", "Inserisci il nome dell'albero che vorresti visitare", InputHints.ExpectingInput);
         return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
     }
 
-    async getTreeCity(stepContext) {
+    async getTreeByName(stepContext) {
 
 
         //CosmosDB
@@ -50,7 +50,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
 
         const { container } = await database.containers.createIfNotExists({ id: "Alberi" });
 
-        var query = "SELECT * FROM c WHERE LOWER(c.COMUNE) LIKE LOWER('%"+stepContext.result+"%')";
+        var query = "SELECT * FROM c WHERE LOWER(c.NOME_VOLGA) LIKE LOWER('%"+stepContext.result+"%')";
         const reply = {
             type: ActivityTypes.Message
         };
@@ -61,7 +61,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
         .fetchAll();
 
         if(resources.length == 0){
-            const msg = MessageFactory.text("Non ci sono alberi monumentali nel comune di "+stepContext.result , "Non ci sono alberi monumentali nel comune di "+stepContext.result, InputHints.ExpectingInput);
+            const msg = MessageFactory.text("Non ci sono alberi monumentali denominati come "+stepContext.result , "Non ci sono alberi monumentali denominati come "+stepContext.result, InputHints.ExpectingInput);
             await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
             return await stepContext.endDialog();
         }else{
@@ -120,7 +120,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
                 return await stepContext.endDialog();
             }
         } catch (error) {
-            console.error(error);
+            console.log(stepContext.attachments);
             return await stepContext.endDialog();
         }
     }
@@ -131,5 +131,5 @@ class TreeByCityDialog extends CancelAndHelpDialog {
     }
 }
 
-module.exports.TreeByCityDialog = TreeByCityDialog;
-module.exports.TREEBYCITY_DIALOG = TREEBYCITY_DIALOG;
+module.exports.GoToTreeDialog = GoToTreeDialog;
+module.exports.GOTOTREE_DIALOG = GOTOTREE_DIALOG;
