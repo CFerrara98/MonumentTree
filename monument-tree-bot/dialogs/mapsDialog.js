@@ -48,7 +48,7 @@ class MapsDialog extends CancelAndHelpDialog {
             {
                 type: 'openUrl',
                 title: 'Open in google maps',
-                value: 'https://www.google.it/maps/preview'
+                value: 'http://www.google.com/maps/place/' + Latitude+ ','+ Longitude
             }]);
 
         reply.attachments = [redirect];
@@ -67,13 +67,6 @@ class MapsDialog extends CancelAndHelpDialog {
           redirect: 'follow'
         };
     
-        
-
-        navigator.geolocation.getCurrentPosition( async (position) => {
-          const { latitude, longitude } = position.coords;
-          // Do something with the data;
-          console.log(latitude, longitude)
-        })
         
         const result = await fetch(`https://atlas.microsoft.com/map/static/png?subscription-key=${ process.env.AZURE_MAPS_KEY }&api-version=1.0&layer=basic&zoom=13&center=${ longitude },${ latitude }&language=en-US&pins=default|al.67|la12 3|lc000000||'You!'${ longitude } ${ latitude }&format=png`, requestOptions)
           .then(response => response.arrayBuffer())
