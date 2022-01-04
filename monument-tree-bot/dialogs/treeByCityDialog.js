@@ -12,9 +12,12 @@ const TREEBYCITY_DIALOG = 'TREEBYCITY_DIALOG';
 
 const MAPS_DIALOG = 'MAPS_DIALOG';
 
+const SENDMAIL_DIALOG = 'SENDMAIL_DIALOG';
+
 const { CosmosClient } = require("@azure/cosmos");
 const { MainDialog } = require('./mainDialog');
 const { MapsDialog } = require('./mapsDialog');
+const {SendMailDialog} = require('./sendMailDialog');
 
 const endpoint = process.env["CosmosDbEndpoint"];
 const key = process.env["CosmosDbAuthKey"];
@@ -28,6 +31,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
 
 
         this.addDialog(new MapsDialog(MAPS_DIALOG))
+            .addDialog(new SendMailDialog(SENDMAIL_DIALOG))
             .addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
                 this.askCity.bind(this),
                 this.getTreeCity.bind(this),
@@ -84,10 +88,17 @@ class TreeByCityDialog extends CancelAndHelpDialog {
                             displayText: o.NOME_VOLGA,
                             text: '{"NomeAlbero": "'+ o.NOME_VOLGA +  '", "Latitudine": "'+  o.Latitudine + '", "Longitudine": "'+  o.Longitudine +'"}',
                             value: {albero: o._id}
+                        } ,
+                        {
+                            type: 'messageBack',
+                            title: "Inviami mail con i dati!",
+                            displayText: "Send Mail!",
+                            text: '{' + '"intent": "mail", ' + '"nome": "'+ o.NOME_VOLGA +  '", "descrizione": "'+  o.DESCRIZIONE + '", "localita": "'+  o.LOCALITA +'" '+   ', "image": "' + o.FOTO + '"' + ', "scheda": "' + o.SCHEDA + '"' +  '}',
+                            value: {albero: o._id}
                         }], {
                             subtitle: o.LOCALITA + ', ' + o.COMUNE,
                             text: o.DESCRIZIONE
-                        }
+                        },
                 );
 
                 reply.attachments = [alberoCard];
@@ -115,6 +126,10 @@ class TreeByCityDialog extends CancelAndHelpDialog {
                 console.log("pippo");
     
                 return await stepContext.beginDialog(MAPS_DIALOG, {"TreeName": parsed.NomeAlbero, "Latitude" : parsed.Latitudine, "Longitude" : parsed.Longitudine});
+            } else if(parsed.intent == "mail"){
+
+                console.log("Pippo 2");
+                return await stepContext.beginDialog(SENDMAIL_DIALOG, {"nome": parsed.nome, "descrizione" : parsed.descrizione, "localita" : parsed.localita, "image" : parsed.image, "scheda" : parsed.scheda});
             } else{
                 console.log("Pluto");
                 return await stepContext.endDialog();
