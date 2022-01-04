@@ -8,6 +8,8 @@ const sgApiKey = process.env["SendGridApiKey"];
 sgMail.setApiKey(sgApiKey);
 
 const request = require('request');
+const { default: axios } = require('axios');
+
 
 
 const TEXT_PROMPT = 'TextPrompt';
@@ -84,46 +86,33 @@ class SendMailDialog extends CancelAndHelpDialog {
           
           ],
           
-          template_id: "d-d412892e0998477a962ae1cf00369fef"
+          template_id: "d-e2c92a94a7b34baca9ff8be556f77e74"
         }
 
 
-        var header = {
+        var headers = {
           'Authorization': 'Bearer ' + sgApiKey,
           'Content-Type': 'application/json'  
         };
           
-        var rest_call = {
-          url: 'https://api.sendgrid.com/v3/mail/send',
-          method: 'POST',
-          headers: header,
-          body: JSON.stringify(message)  
-        }
+      
 
-        var success;
 
-        console.log(intestatario);
-        request(rest_call, (err, response, body) => {
+      console.log(intestatario);
 
-          if (!err) {
-            success = true;
-          
-          } else {
+        axios.post('https://api.sendgrid.com/v3/mail/send', JSON.stringify(message), { headers }).then(res => {
+            console.log(`statusCode: ${res.status}`)
+            console.log(res)
 
-            success = false;
+        }).catch(error => {
+            console.error(error)
 
-          }
-        
+            throw new Error("Mail non inviata!");
         });
 
-        if (success) {
-          const msg = MessageFactory.text("Scheda dell'albero " + nome + " inviata all'indirizzo: " + intestatario, InputHints.ExpectingInput);
-          return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
         
-        } else {
-          const msg = MessageFactory.text("Errore nell'invio del messaggio!", InputHints.ExpectingInput);
-          return  await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
-        }
+      const msg = MessageFactory.text("Scheda dell'albero " + nome + " inviata all'indirizzo: " + intestatario, InputHints.ExpectingInput);
+      return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
 
     }
 
