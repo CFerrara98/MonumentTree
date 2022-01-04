@@ -110,7 +110,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
 
 
 
-        const msg = MessageFactory.text("Clicca Raggiungi un'albero in una delle card oppure scrivi qualcos'altro per andare indietro!" , "", InputHints.ExpectingInput);
+        const msg = MessageFactory.text("Clicca un'opzione su una card oppure scrivi qualcos'altro per andare indietro!" , "", InputHints.ExpectingInput);
         return  await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
 
     }
@@ -120,6 +120,8 @@ class TreeByCityDialog extends CancelAndHelpDialog {
 
         try {
             var string = stepContext.result;
+            console.log(string);
+
             let parsed = JSON.parse(string);
     
             if(listanomi.includes(parsed.NomeAlbero)) {
@@ -129,7 +131,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
             } else if(parsed.intent == "mail"){
 
                 console.log("Pippo 2");
-                return await stepContext.beginDialog(SENDMAIL_DIALOG, {"nome": parsed.nome, "descrizione" : parsed.descrizione, "localita" : parsed.localita, "image" : parsed.image, "scheda" : parsed.scheda});
+                return await stepContext.beginDialog(SENDMAIL_DIALOG, {"nome": parsed.nome, "localita" : parsed.localita, "image" : parsed.image, "scheda" : parsed.scheda});
             } else{
                 console.log("Pluto");
                 return await stepContext.endDialog();

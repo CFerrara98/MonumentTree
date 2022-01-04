@@ -41,7 +41,6 @@ class SendMailDialog extends CancelAndHelpDialog {
         var intestatario = stepContext.result;
         
         var nome = stepContext._info.options.nome;
-        var descrizione = stepContext._info.options.descrizione;
         var localita = stepContext._info.options.localita;
         var image = stepContext._info.options.image;
         var scheda = stepContext._info.options.scheda;
@@ -57,7 +56,7 @@ class SendMailDialog extends CancelAndHelpDialog {
           
             reply_to: {
           
-              email: intestatario,
+              email: "magicgamer88@gmail.com"
           
             },
           
@@ -68,15 +67,13 @@ class SendMailDialog extends CancelAndHelpDialog {
             to: [
           
               {
-                email : "magicgamer88@gmail.com"
-          
+                email : intestatario
               }
           
              ],
           
             dynamic_template_data:{
               "nome": nome,
-              "descrizione": descrizione,
               "localita": localita,
               "image": image,
               "scheda": scheda
@@ -86,7 +83,7 @@ class SendMailDialog extends CancelAndHelpDialog {
           
           ],
           
-          template_id: "d-e2c92a94a7b34baca9ff8be556f77e74"
+          template_id: "d-334e67626b3d418586076e2ec23dd1f1"
         }
 
 
