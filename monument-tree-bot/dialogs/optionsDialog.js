@@ -47,12 +47,10 @@ class OptionDialog extends CancelAndHelpDialog {
     
 
     async optionsStep(stepContext){
-
-        console.log("sono qui");
+        
         var messageText = 'Cosa puoi fare in Monument Tree';
         messageText += '\n1. Cercare alberi monumentali per località ed ottenere info'
-        messageText += '\n2. Mostrarmi un\' immagine scattata per verificare la presenza di alberi monumentali simili nella regione Campania';
-        messageText += '\n3. Raggiungere uno specifico albero monuentale';
+        messageText += '\n2. Raggiungere uno specifico albero monuentale';
 
         const msg = MessageFactory.text(messageText, messageText, InputHints.ExpectingInput);
         return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });

@@ -34,8 +34,9 @@ class MapsDialog extends CancelAndHelpDialog {
         
         var Latitude = stepContext._info.options.Latitude;
         var Longitude = stepContext._info.options.Longitude;
+        var Name = stepContext._info.options.TreeName;
 
-        await this.getMap(stepContext,  Latitude, Longitude);
+        await this.getMap(stepContext,  Latitude, Longitude, Name);
 
         const reply = {
             type: ActivityTypes.Message
@@ -58,7 +59,7 @@ class MapsDialog extends CancelAndHelpDialog {
 
     }
 
-    async getMap(stepContext, latitude, longitude) {
+    async getMap(stepContext, latitude, longitude, name) {
         var requestOptions = {
           method: 'GET',
           headers: {
@@ -68,7 +69,7 @@ class MapsDialog extends CancelAndHelpDialog {
         };
     
         
-        const result = await fetch(`https://atlas.microsoft.com/map/static/png?subscription-key=${ process.env.AZURE_MAPS_KEY }&api-version=1.0&layer=basic&zoom=13&center=${ longitude },${ latitude }&language=en-US&pins=default|al.67|la12 3|lc000000||'You!'${ longitude } ${ latitude }&format=png`, requestOptions)
+        const result = await fetch(`https://atlas.microsoft.com/map/static/png?subscription-key=${ process.env.AZURE_MAPS_KEY }&api-version=1.0&layer=basic&zoom=13&center=${ longitude },${ latitude }&language=en-US&pins=default|al.67|la12 3|lc000000||'${name}!'${ longitude } ${ latitude }&format=png`, requestOptions)
           .then(response => response.arrayBuffer())
           .then(async result => {
             const bufferedData = Buffer.from(result, 'binary');
