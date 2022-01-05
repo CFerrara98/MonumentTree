@@ -51,10 +51,10 @@ const { TreeByCityDialog } = require('./dialogs/treeByCityDialog');
 const TREEBYCITY_DIALOG = 'treeByCityDialog';
 
 const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
-    MicrosoftAppId: "",
+    MicrosoftAppId: "9383cc98-3b05-418b-bb41-c258697a2d53",
     MicrosoftAppPassword: "",
-    MicrosoftAppType: "",
-    MicrosoftAppTenantId: ""
+    MicrosoftAppType: "UserAssignedMSI",
+    MicrosoftAppTenantId: "baad0228-5092-455d-aa0b-af0c602ec39c"
 });
 
 const botFrameworkAuthentication = createBotFrameworkAuthenticationFromConfiguration(null, credentialsFactory);
