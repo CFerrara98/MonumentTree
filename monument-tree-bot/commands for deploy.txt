@@ -1,0 +1,7 @@
+az ad app create --display-name "MonumentTreeWebApp" --password "AtLeastSixteenCharacters_0" --available-to-other-tenants
+
+az ad app create --display-name "MonumentTreeWebApp" --password "AtLeastSixteenCharacters_0" --available-to-other-tenants
+
+az deployment group create --resource-group "MonumentTree" --template-file "C:\Users\carmi\Desktop\Cloud\MonumentTreeGit\deploymentTemplates\preexisting-rg-parameters.json" --parameters appId="MonumentTreeApp" appSecret="AtLeastSixteenCharacters_0" botId="MonumentTree" newWebAppName="<bot-app-service-name>" existingAppServicePlan="ASP-MonumentTree-acf3" appServicePlanLocation="West Europe" --name "ASP-MonumentTree-acf3"      
+
+>az webapp deployment source config-zip --resource-group "MonumentTree" --name "MonumentTreeApp" --src "./monument-tree-bot.zip"
