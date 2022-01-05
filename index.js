@@ -45,6 +45,28 @@ const myStorage = new CosmosDbPartitionedStorage({
     compatibilityMode: false
 });
 
+
+const Telegraf = require('telegraf')
+const bot = new Telegraf('5032715184:AAHG-BZpaLE2BzxDN9kX-uXp7MIDuFlsRiw')
+const EXCHANGE=1.125
+
+bot.start((message) => {
+  	return message.reply('Il bot è avviato')
+})
+bot.command('eur', context=> {
+        msg=context.update.message
+	importo=msg.text.split(' ')[1]
+	dollari=EXCHANGE*importo
+	context.reply(`${dollari} USD`)
+})
+bot.command('usd', context=> {
+        msg=context.update.message
+	importo=msg.text.split(' ')[1]
+	euro=importo/EXCHANGE
+	context.reply(`${euro} EUR`)
+})
+bot.launch()
+
 //the bot's secondary dialog
 const { TreeByCityDialog } = require('./dialogs/treeByCityDialog');
 const TREEBYCITY_DIALOG = 'treeByCityDialog';
@@ -141,5 +163,5 @@ server.on('upgrade', async (req, socket, head) => {
 
     await streamingAdapter.process(req, socket, head, (context) => bot.run(context));
 });
-console.log("4");
+console.log("");
 module.exports.myStorage = myStorage;
