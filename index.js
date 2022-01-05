@@ -64,6 +64,7 @@ const adapter = new CloudAdapter(botFrameworkAuthentication);
 
 // Catch-all for errors.
 const onTurnErrorHandler = async (context, error) => {
+    console.log("1");
     // This check writes out errors to console log .vs. app insights.
     // NOTE: In production environment, you should consider logging this to Azure
     //       application insights.
@@ -76,6 +77,7 @@ const onTurnErrorHandler = async (context, error) => {
         'https://www.botframework.com/schemas/error',
         'TurnError'
     );
+    console.log("2");
 
     // Send a message to the user
     let onTurnErrorMessage = 'The bot encountered an error or bug.';
@@ -120,7 +122,7 @@ server.listen(process.env.port || process.env.PORT || 3978, function() {
     console.log(`\n${ server.name } listening to ${ server.url }`);
     console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
     console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
-    
+    console.log("3");
 });
 
 // Listen for incoming activities and route them to your bot main dialog.
@@ -139,5 +141,5 @@ server.on('upgrade', async (req, socket, head) => {
 
     await streamingAdapter.process(req, socket, head, (context) => bot.run(context));
 });
-
+console.log("4");
 module.exports.myStorage = myStorage;
