@@ -19,8 +19,8 @@ const { MainDialog } = require('./mainDialog');
 const { MapsDialog } = require('./mapsDialog');
 const {SendMailDialog} = require('./sendMailDialog');
 
-const endpoint = process.env["CosmosDbEndpoint"];
-const key = process.env["CosmosDbAuthKey"];
+const endpoint = "https://cosmosmonumentreetbot.documents.azure.com:443/";
+const key = "Gf1kQr3AGRY1ne9UplCcyYYrhLxKJLieenqP21ETfNn6LkefG1lM15G0iObdYPhLMOPNNe2yHF4cjKfytM5B6A==";
 const clientDB = new CosmosClient({ endpoint, key });
 
 const listanomi = [];

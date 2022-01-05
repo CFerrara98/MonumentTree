@@ -38,10 +38,10 @@ const OPTIONDIALOG = 'optionsDialog';
 const { CosmosDbPartitionedStorage } = require('botbuilder-azure');
 
 const myStorage = new CosmosDbPartitionedStorage({
-    cosmosDbEndpoint: process.env.CosmosDbEndpoint,
-    authKey: process.env.CosmosDbAuthKey,
-    databaseId: process.env.CosmosDbDatabaseId,
-    containerId: process.env.CosmosDbContainerId,
+    cosmosDbEndpoint: "https://cosmosmonumentreetbot.documents.azure.com:443/",
+    authKey: "Gf1kQr3AGRY1ne9UplCcyYYrhLxKJLieenqP21ETfNn6LkefG1lM15G0iObdYPhLMOPNNe2yHF4cjKfytM5B6A==",
+    databaseId: "Alberi",
+    containerId: "Alberi",
     compatibilityMode: false
 });
 
@@ -50,10 +50,10 @@ const { TreeByCityDialog } = require('./dialogs/treeByCityDialog');
 const TREEBYCITY_DIALOG = 'treeByCityDialog';
 
 const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
-    MicrosoftAppId: process.env.MicrosoftAppId,
-    MicrosoftAppPassword: process.env.MicrosoftAppPassword,
-    MicrosoftAppType: process.env.MicrosoftAppType,
-    MicrosoftAppTenantId: process.env.MicrosoftAppTenantId
+    MicrosoftAppId: "",
+    MicrosoftAppPassword: "",
+    MicrosoftAppType: "",
+    MicrosoftAppTenantId: ""
 });
 
 const botFrameworkAuthentication = createBotFrameworkAuthenticationFromConfiguration(null, credentialsFactory);
@@ -99,7 +99,9 @@ const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
 const userState = new UserState(memoryStorage);
 
-const { LuisAppId, LuisAPIKey, LuisAPIHostName } = process.env;
+const LuisAppId = "66db2016-4de7-435c-a4a9-abe157fc6d2a";
+const LuisAPIKey = "71f5289adef143a2b6883a184421f4af";
+const LuisAPIHostName = "westeurope.api.cognitive.microsoft.com";
 const luisConfig = { applicationId: LuisAppId, endpointKey: LuisAPIKey, endpoint: `https://${ LuisAPIHostName }` };
 
 const luisRecognizer = new MonumentTreeRecognizer(luisConfig);

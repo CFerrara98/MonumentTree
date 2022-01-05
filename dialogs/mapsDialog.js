@@ -8,8 +8,8 @@ const WATERFALL_DIALOG = 'waterfallDialog';
 const MAPS_DIALOG = 'MAPS_DIALOG';
 
 const { CosmosClient } = require("@azure/cosmos");
-const endpoint = process.env["CosmosDbEndpoint"];
-const key = process.env["CosmosDbAuthKey"];
+const endpoint = "https://cosmosmonumentreetbot.documents.azure.com:443/";
+const key = "Gf1kQr3AGRY1ne9UplCcyYYrhLxKJLieenqP21ETfNn6LkefG1lM15G0iObdYPhLMOPNNe2yHF4cjKfytM5B6A==";
 const clientDB = new CosmosClient({ endpoint, key });
 
 const fetch = require('node-fetch');
@@ -69,7 +69,7 @@ class MapsDialog extends CancelAndHelpDialog {
         };
     
         
-        const result = await fetch(`https://atlas.microsoft.com/map/static/png?subscription-key=${ process.env.AZURE_MAPS_KEY }&api-version=1.0&layer=basic&zoom=13&center=${ longitude },${ latitude }&language=en-US&pins=default|al.67|la12 3|lc000000||'${name}!'${ longitude } ${ latitude }&format=png`, requestOptions)
+        const result = await fetch(`https://atlas.microsoft.com/map/static/png?subscription-key=${ "PVv421MTI6jsU7dIpIfHZTXUEjGUvSx72toeY4fwv8U" }&api-version=1.0&layer=basic&zoom=13&center=${ longitude },${ latitude }&language=en-US&pins=default|al.67|la12 3|lc000000||'${name}!'${ longitude } ${ latitude }&format=png`, requestOptions)
           .then(response => response.arrayBuffer())
           .then(async result => {
             const bufferedData = Buffer.from(result, 'binary');

@@ -4,7 +4,7 @@ const { WaterfallDialog } = require('botbuilder-dialogs');
 const { CancelAndHelpDialog } = require('./cancelAndHelpDialog');
 
 const sgMail = require('@sendgrid/mail')
-const sgApiKey = process.env["SendGridApiKey"];
+const sgApiKey = "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";
 sgMail.setApiKey(sgApiKey);
 
 const request = require('request');
