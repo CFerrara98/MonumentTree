@@ -22,6 +22,11 @@ const {
     GoToTreeDialog
 } = require("./gotoTreeDialog");
 
+const {
+    SEARCHBYIMG_DIALOG,
+    SearchByImgDialog
+} = require('./searchByImgDialog');
+
 class OptionDialog extends CancelAndHelpDialog {
     constructor(id, luisRecognizer) {
         super(id || 'optionsDialog');
@@ -32,6 +37,7 @@ class OptionDialog extends CancelAndHelpDialog {
 
         this.addDialog(new TreeByCityDialog());
         this.addDialog(new GoToTreeDialog());
+        this.addDialog(new SearchByImgDialog());
         this.addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
                 this.optionsStep.bind(this),
                 this.luisStep.bind(this),
@@ -50,7 +56,8 @@ class OptionDialog extends CancelAndHelpDialog {
         
         var messageText = 'Cosa puoi fare in Monument Tree';
         messageText += '\n1. Cercare alberi monumentali per località ed ottenere info'
-        messageText += '\n2. Raggiungere uno specifico albero monuentale';
+        messageText += '\n2. Raggiungere uno specifico albero monuentale'
+        messageText += '\n3. Cerca alberi simili caricando una foto';
 
         const msg = MessageFactory.text(messageText, messageText, InputHints.ExpectingInput);
         return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
@@ -78,6 +85,12 @@ class OptionDialog extends CancelAndHelpDialog {
                             // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                             const msg = MessageFactory.text("Vuoi raggiungere uno specifico albero!", "Vuoi raggiungere uno specifico albero!", InputHints.ExpectingInput);
                             return await stepContext.beginDialog(GOTOTREE_DIALOG);
+                        }
+
+                        case 'SearchByImg': {
+                            // We haven't implemented the GetWeatherDialog so we just display a TODO message.
+                            const msg = MessageFactory.text("Vuoi caricare una foto di un albero!", "Vuoi caricare una foto di un albero!", InputHints.ExpectingInput);
+                            return await stepContext.beginDialog(SEARCHBYIMG_DIALOG);
                         }
                 
                     default: {
