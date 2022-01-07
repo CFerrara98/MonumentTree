@@ -20,6 +20,7 @@ const key = process.env["CosmosDbAuthKey"];
 const clientDB = new CosmosClient({ endpoint, key });
 const deepai = require('deepai');
 const fs = require('fs');
+const { Console } = require('console');
 deepai.setApiKey('959272fd-773e-4cd4-a2e0-843c2a2b495f');
 
 const listaurl = [];
@@ -57,14 +58,19 @@ class SearchByImgDialog extends CancelAndHelpDialog {
         const { resources } = await container.items
         .query(query)
         .fetchAll();
-        
+        console.log(resources);
         for (const o of resources) {
             listaurl.push(o.FOTO);
         }
 
-        for (const imgurl of listaurl) {
+
+        var i, imgurl; 
+        for ( i = 0; i < 1 ; i++) {
+
+            imgurl = listaurl[Math.floor(Math.random() * listaurl.length) - 1];
+
             var resp = await deepai.callStandardApi("image-similarity", {
-                image1: fs.createReadStream("C:/Users/User/Desktop/02.jpg"),
+                image1: fs.createReadStream("C:/Users/carmi/Desktop/Cloud/20022016_albero-monumentale_03.jpg"),
                 image2: imgurl,
             });
             var similarity = parseInt(JSON.stringify(resp.output.distance));
@@ -76,12 +82,15 @@ class SearchByImgDialog extends CancelAndHelpDialog {
             console.log("Best similar image: " + bestFitUrl);
         }
 
-        var query = "SELECT * FROM c WHERE c.FOTO ='"+bestFitUrl+"'" ;
-        resources = await container.items
-        .query(query)
-        .fetchAll();
+        query = "SELECT * FROM c WHERE c.FOTO ='"+bestFitUrl+"'" ;
+        const {resources2} = await container.items.query(query).fetchAll();
 
-        const msg = MessageFactory.text("Ho eseguito l\'algoritmo di similarità! E\' stata trovata una similarità del " + bestFit + " con l\'albero: " + resources.NOME_VOLGA, "Ho eseguito l\'algoritmo di similarità!", InputHints.ExpectingInput);
+        for (const o of resources2) {
+            var msg = MessageFactory.text("Ho eseguito l\'algoritmo di similarità! E\' stata trovata una similarità del " + bestFit + " con l\'albero: " + o.SCHEDA, "Ho eseguito l\'algoritmo di similarità!", InputHints.ExpectingInput);
+            await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
+        }
+
+        var msg = MessageFactory.text("Fratelli e Sorelle Carissimi!, Buon Pranzo!!", InputHints.ExpectingInput);
         return  await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
     }
 
