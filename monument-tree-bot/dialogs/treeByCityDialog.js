@@ -87,14 +87,14 @@ class TreeByCityDialog extends CancelAndHelpDialog {
                             title: "Raggiungi l\'albero",
                             displayText: o.NOME_VOLGA,
                             text: '{"NomeAlbero": "'+ o.NOME_VOLGA +  '", "Latitudine": "'+  o.Latitudine + '", "Longitudine": "'+  o.Longitudine +'"}',
-                            value: {albero: o._id}
+                            value: '{"NomeAlbero": "'+ o.NOME_VOLGA +  '", "Latitudine": "'+  o.Latitudine + '", "Longitudine": "'+  o.Longitudine +'"}'
                         } ,
                         {
                             type: 'messageBack',
                             title: "Inviami mail con i dati!",
                             displayText: "Send Mail!",
-                            text: '{' + '"intent": "mail", ' + '"nome": "'+ o.NOME_VOLGA +  '", "descrizione": "'+  o.DESCRIZIONE + '", "localita": "'+  o.LOCALITA +'" '+   ', "image": "' + o.FOTO + '"' + ', "scheda": "' + o.SCHEDA + '"' +  '}',
-                            value: {albero: o._id}
+                            text: '{' + '"intent": "mail", ' + '"nome": "'+ o.NOME_VOLGA +  '", "localita": "'+  o.LOCALITA +'" '+   ', "image": "' + o.FOTO + '"' + ', "scheda": "' + o.SCHEDA + '"' +  '}',
+                            value: '{' + '"intent": "mail", ' + '"nome": "'+ o.NOME_VOLGA +  '", "localita": "'+  o.LOCALITA +'" '+   ', "image": "' + o.FOTO + '"' + ', "scheda": "' + o.SCHEDA + '"' +  '}'
                         }], {
                             subtitle: o.LOCALITA + ', ' + o.COMUNE,
                             text: o.DESCRIZIONE

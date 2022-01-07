@@ -74,13 +74,15 @@ class SearchByImgDialog extends CancelAndHelpDialog {
         var bestFitUrl = "";
         var bestschedaUrl = "";
 
-        const https = require('https');
+       /* 
+       da usare per il servizio DeepLearn in locale
+       const https = require('https');
 
         const file = fs.createWriteStream("./file.jpg");
         const request = http.get(imgSend, function(response) {
         response.pipe(file);
         });
-        console.log("File: "+JSON.stringify(file));
+        console.log("File: "+JSON.stringify(file));*/
         
         //CosmosDB
         const { database } = await clientDB.databases.createIfNotExists({ id: "Alberi" });
@@ -107,7 +109,11 @@ class SearchByImgDialog extends CancelAndHelpDialog {
             schedaurl = listaschede[index];
 
             var resp = await deepai.callStandardApi("image-similarity", {
+                /*
+                locale
                 image1: fs.createReadStream("./file.jpg"),
+                */
+                image1: imgSend,
                 image2: imgurl,
             });
             var similarity = parseInt(JSON.stringify(resp.output.distance));
@@ -121,8 +127,8 @@ class SearchByImgDialog extends CancelAndHelpDialog {
         }
         
         msg = MessageFactory.text("Ho eseguito l\'algoritmo di similarità! E\' stata trovata una maggior similarità con l\'albero: " + bestschedaUrl, "Ho eseguito l\'algoritmo di similarità!", InputHints.ExpectingInput);
-        return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
-        
+        await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
+        return await stepContext.endDialog();
     }
 
     isAmbiguous(timex) {
