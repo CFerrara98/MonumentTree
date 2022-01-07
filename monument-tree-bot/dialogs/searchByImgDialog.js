@@ -95,8 +95,11 @@ class SearchByImgDialog extends CancelAndHelpDialog {
             listaschede.push(o.SCHEDA);
         }
 
+        var msg = MessageFactory.text("Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania... ", "Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania...", InputHints.ExpectingInput);
+        await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
+        
+        var i, imgurl, schedaurl, index;
 
-        var i, imgurl, schedaurl, index; 
         for ( i = 0; i < 15 ; i++) {
 
             index = Math.floor(Math.random() * listaurl.length) - 1;
@@ -117,7 +120,7 @@ class SearchByImgDialog extends CancelAndHelpDialog {
             console.log("Best similar image: " + bestFitUrl);
         }
         
-        const msg = MessageFactory.text("Ho eseguito l\'algoritmo di similarità! E\' stata trovata una maggior similarità con l\'albero: " + bestschedaUrl, "Ho eseguito l\'algoritmo di similarità!", InputHints.ExpectingInput);
+        msg = MessageFactory.text("Ho eseguito l\'algoritmo di similarità! E\' stata trovata una maggior similarità con l\'albero: " + bestschedaUrl, "Ho eseguito l\'algoritmo di similarità!", InputHints.ExpectingInput);
         return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
         
     }
