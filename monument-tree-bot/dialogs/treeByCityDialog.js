@@ -42,7 +42,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
     }
 
     async askCity(stepContext) {
-        const msg = MessageFactory.text("Inserisci il comune di interesse", "Inserisci la città di interesse", InputHints.ExpectingInput);
+        const msg = MessageFactory.text("Vuoi cercare gli alberi in una località, inserisci il comune d'interesse", "Inserisci il comune d'interesse", InputHints.ExpectingInput);
         return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
     }
 
@@ -110,7 +110,7 @@ class TreeByCityDialog extends CancelAndHelpDialog {
 
 
 
-        const msg = MessageFactory.text("Clicca un'opzione su una card oppure scrivi qualcos'altro per andare indietro!" , "", InputHints.ExpectingInput);
+        const msg = MessageFactory.text("Clicca un\'opzione su una card oppure scrivi qualcos\'altro per tornare indietro!" , "", InputHints.ExpectingInput);
         return  await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
 
     }

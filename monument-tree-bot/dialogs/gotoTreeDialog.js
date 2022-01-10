@@ -108,7 +108,7 @@ class GoToTreeDialog extends CancelAndHelpDialog {
 
 
 
-        const msg = MessageFactory.text("Clicca un'opzione su una card oppure scrivi qualcos'altro per andare indietro!" , "", InputHints.ExpectingInput);
+        const msg = MessageFactory.text("Clicca un\'opzione su una card oppure scrivi qualcos\'altro per tornare indietro!" , "", InputHints.ExpectingInput);
         return  await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
 
     }

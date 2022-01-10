@@ -54,10 +54,12 @@ class OptionDialog extends CancelAndHelpDialog {
 
     async optionsStep(stepContext){
         
-        var messageText = 'Cosa puoi fare in Monument Tree';
-        messageText += '\n1. Cercare alberi monumentali per località ed ottenere info'
-        messageText += '\n2. Raggiungere uno specifico albero monuentale'
-        messageText += '\n3. Cerca alberi simili caricando una foto';
+        var messageText = 'Con questo bot puoi ottenere informazioni sui bellissimi alberi monumentali della regione Campania.\n';
+        messageText += '\nEcco cosa puoi fare in Monument Tree:'
+        messageText += '\n1. Cercare e visitare alberi monumentali partendo dal nome di una località'
+        messageText += '\n2. Cercare e visitare un albero monumentale di tuo interesse inserendone il nome'
+        messageText += '\n3. Scattare una foto ed effettuare una ricerca per similarità con tutti gli alberi in archivio\n\n'
+        messageText += '\nCon le funzionalità di ricerca puoi anche ricevere una e-mail contenente la scheda dell\'albero che ti piace!'
 
         const msg = MessageFactory.text(messageText, messageText, InputHints.ExpectingInput);
         return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
@@ -68,17 +70,10 @@ class OptionDialog extends CancelAndHelpDialog {
     async luisStep(stepContext){
         
         const luisResult = await this.luisRecognizer.executeLuisQuery(stepContext.context);
-        switch (LuisRecognizer.topIntent(luisResult)) {
+        switch (LuisRecognizer.topIntent(luisResult,"",0.7)) {
             
                         case 'InformazioniByZona': {
                             return await stepContext.beginDialog(TREEBYCITY_DIALOG);              
-                        }
-                
-                        case 'AlberiByPhoto': {
-                            // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-                            const msg = MessageFactory.text("Mi hai chiesto gli alberi data una foto!", "Mi hai chiesto gli alberi data una foto!", InputHints.ExpectingInput);
-                            return await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
-
                         }
 
                         case 'PosizioneByAlbero': {
@@ -95,8 +90,9 @@ class OptionDialog extends CancelAndHelpDialog {
                 
                     default: {
                         // Catch all for unhandled intents
-                        const didntUnderstandMessageText = `Sorry, I didn't get that. Please try asking in a different way (intent was ${ LuisRecognizer.topIntent(luisResult) })`;
+                        const didntUnderstandMessageText = `Scusami non ho capito, prova a digitare un nuovo messaggio.`;
                         await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+                        return await stepContext.replaceDialog(this.id);
                     }
                 }
 
@@ -108,8 +104,8 @@ class OptionDialog extends CancelAndHelpDialog {
     }
     
     
-    async loopStep(step) {
-        return await step.replaceDialog(this.id);
+    async loopStep(stepContex) {
+        return await stepContex.replaceDialog(this.id);
     }
 
     isAmbiguous(timex) {
