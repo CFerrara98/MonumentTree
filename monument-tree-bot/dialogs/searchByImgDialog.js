@@ -49,19 +49,6 @@ class SearchByImgDialog extends CancelAndHelpDialog {
         return await stepContext.prompt(ATTACHMENT_PROMPT, { prompt: msg });
     }
 
-    /*getInlineAttachment() {
-        const imageData = fs.readFileSync(path.join(__dirname, '../resources/architecture-resize.png'));
-        const base64Image = Buffer.from(imageData).toString('base64');
-    
-        return {
-            name: 'architecture-resize.png',
-            contentType: 'image/png',
-            contentUrl: `data:image/png;base64,${ base64Image }`
-        };
-    }*/
-
-    
-
     async searchTree(stepContext) {
 
         
@@ -100,11 +87,6 @@ class SearchByImgDialog extends CancelAndHelpDialog {
         var i, imgurl, schedaurl, index;
 
         for ( i = 0; i < 15 ; i++) {
-
-            if(i==5) {
-                var msg = MessageFactory.text("Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania... ", "Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania...", InputHints.ExpectingInput);
-                await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
-            }
 
             index = Math.floor(Math.random() * listaurl.length) - 1;
             imgurl = listaurl[index];
