@@ -6,4 +6,6 @@ AtLeastSixteenCharacters_0
 
 az deployment group create --resource-group "MonumentTree" --template-file "C:\Users\carmi\Desktop\Cloud\MonumentTreeGit\monument-tree-bot\deploymentTemplates\preexisting-rg-parameters.json" --parameters appId="d35c8124-1093-4dba-8527-15ddc60aa01e" appSecret="AtLeastSixteenCharacters_0" botId="MonumentTreeAppBot" newWebAppName="MonumentTreeWeb" existingAppServicePlan="ASP-MonumentTree-869e" appServicePlanLocation="West Europe" --name "MonumentTreeAppBot"
 
-az webapp deployment source config-zip --resource-group "MonumentTree" --name "MonumentTreeWeb" --src "./monument-tree.zip"
+az webapp deployment source config-zip --resource-group "MonumentalTree" --name "MonumentalTree" --src "./monument-tree.zip"
+
+az webapp log tail --name MonumentalTree --resource-group MonumentalTree
