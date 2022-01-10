@@ -96,13 +96,15 @@ class SearchByImgDialog extends CancelAndHelpDialog {
             listaurl.push(o.FOTO);
             listaschede.push(o.SCHEDA);
         }
-
-        var msg = MessageFactory.text("Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania... ", "Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania...", InputHints.ExpectingInput);
-        await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
         
         var i, imgurl, schedaurl, index;
 
         for ( i = 0; i < 15 ; i++) {
+
+            if(i==5) {
+                var msg = MessageFactory.text("Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania... ", "Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania...", InputHints.ExpectingInput);
+                await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
+            }
 
             index = Math.floor(Math.random() * listaurl.length) - 1;
             imgurl = listaurl[index];
@@ -129,11 +131,6 @@ class SearchByImgDialog extends CancelAndHelpDialog {
         msg = MessageFactory.text("Ho eseguito l\'algoritmo di similarità! E\' stata trovata una maggior similarità con l\'albero: " + bestschedaUrl, "Ho eseguito l\'algoritmo di similarità!", InputHints.ExpectingInput);
         await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
         return await stepContext.endDialog();
-    }
-
-    isAmbiguous(timex) {
-        const timexPropery = new TimexProperty(timex);
-        return !timexPropery.types.has('definite');
     }
 }
 
