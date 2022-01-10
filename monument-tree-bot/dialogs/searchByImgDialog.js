@@ -84,6 +84,9 @@ class SearchByImgDialog extends CancelAndHelpDialog {
             listaschede.push(o.SCHEDA);
         }
         
+        var msg = MessageFactory.text("Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania... ", "Attendi qualche istante, sto confrontando la tua foto con i bellissimi alberi monumentali della Campania...", InputHints.ExpectingInput);
+        await stepContext.context.sendActivity(msg, null, InputHints.IgnoringInput);
+        
         var i, imgurl, schedaurl, index;
 
         for ( i = 0; i < 15 ; i++) {
