@@ -52,7 +52,10 @@ class SearchByImgDialog extends CancelAndHelpDialog {
     async searchTree(stepContext) {
 
         
-        
+        const reply = {
+            type: ActivityTypes.Message
+        };
+
         var Attachment = stepContext.result;
         console.log("foto: "+ Attachment[0].contentUrl);
         const imgSend = Attachment[0].contentUrl;
@@ -115,6 +118,24 @@ class SearchByImgDialog extends CancelAndHelpDialog {
         
         msg = MessageFactory.text("Ho eseguito l\'algoritmo di similarità! E\' stata trovata una maggior similarità con l\'albero: " + bestschedaUrl, "Ho eseguito l\'algoritmo di similarità!", InputHints.ExpectingInput);
         await stepContext.prompt(TEXT_PROMPT, { prompt: msg });
+
+        var adaptiveCardAttachment = CardFactory.adaptiveCard(
+            {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.0",
+                "body": [
+                    {
+                    "type": "Image",
+                    "url": bestFitUrl
+                    }
+                ]
+            }
+        )
+
+        reply.attachments = [adaptiveCardAttachment];
+        await stepContext.context.sendActivity(reply);
+        
         return await stepContext.endDialog();
     }
 }

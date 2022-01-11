@@ -71,6 +71,24 @@ class TreeByCityDialog extends CancelAndHelpDialog {
         }else{
             for (const o of resources) {
                 listanomi.push(o.NOME_VOLGA);
+
+                var adaptiveCardAttachment = CardFactory.adaptiveCard(
+                    {
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "type": "AdaptiveCard",
+                        "version": "1.0",
+                        "body": [
+                            {
+                            "type": "Image",
+                            "url": o.FOTO
+                            }
+                        ]
+                    }
+                )
+
+                reply.attachments = [adaptiveCardAttachment];
+                await stepContext.context.sendActivity(reply);
+                
                 console.log("Alberi trovati:" + o.NOME_VOLGA);
                 var alberoCard = CardFactory.thumbnailCard(
                     o.NOME_VOLGA,
