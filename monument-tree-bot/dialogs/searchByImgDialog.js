@@ -23,7 +23,7 @@ const clientDB = new CosmosClient({ endpoint, key });
 const deepai = require('deepai');
 const fs = require('fs');
 const { Console } = require('console');
-deepai.setApiKey('959272fd-773e-4cd4-a2e0-843c2a2b495f');
+deepai.setApiKey('01234'); //insert your Deep AI Api Key
 
 const listaurl = [];
 const listaschede = [];
